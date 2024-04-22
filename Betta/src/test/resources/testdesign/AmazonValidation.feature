@@ -1,6 +1,6 @@
 Feature: Amazon homepage validation
 
-  @amzon
+  @amzon @alpha
     #before
   Scenario: search funcationality
 

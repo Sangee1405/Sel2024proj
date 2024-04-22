@@ -13,7 +13,7 @@ public class SearchResultPage {
     }
     public void selectProductFromSearchResultPage(int searchIndex){
 
-        driver.findElement(By.xpath("//div[@data-cel-widget='search_result_"+searchIndex+" ']")).click();
+        driver.findElement(By.xpath("//div[@data-cel-widget='search_result_"+searchIndex+" ' ]")).click();
 
 
     }

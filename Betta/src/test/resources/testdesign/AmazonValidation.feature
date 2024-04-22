@@ -3,7 +3,6 @@ Feature: Amazon homepage validation
   @amzon @alpha
     #before
   Scenario: search funcationality
-
    # Given user navigates to Amazon Homepage
     When user enters the product name "ïPhone" in searchbox
     Then verify the search result
@@ -24,7 +23,6 @@ Feature: Amazon homepage validation
   @amzon01
   #before
     Scenario: handle the static dropdown
-
     #  Given user navigates to Amazon Homepage
       When user selects the required value from the category dropdown
       And the user extract the dropdown values
@@ -34,9 +32,7 @@ Feature: Amazon homepage validation
 
 
   @amzon02
-
   Scenario: handle the mouse actions
-
     Given user selects the baby wishlist
 
     @drag01

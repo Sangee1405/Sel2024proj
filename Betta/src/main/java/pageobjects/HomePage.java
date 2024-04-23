@@ -23,13 +23,13 @@ public class HomePage {
     public void selectCategoryDropdownByIndex(int index){
 
         WebElement catElement = driver.findElement(By.id("searchDropdownBox"));
-        Select f = new Select();
+        Select f = new Select(catElement);
         f.selectByIndex(index);
     }
 
     public void selectCategoryDropdownByValue(String value){
         WebElement catElement = driver.findElement(By.id("searchDropdownBox"));
-        Select s =new Select();
+        Select s =new Select(catElement);
         s.selectByValue(value);
     }
 }

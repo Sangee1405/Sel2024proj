@@ -2,6 +2,7 @@ package stepdef;
 
 import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.junit.Assert;
+import org.openqa.selenium.remote.tracing.opentelemetry.SeleniumSpanExporter;
 import reusable.BaseCode;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -271,6 +272,25 @@ public class SalesForceSteps extends BaseCode {
 
     @Then("verify the search")
     public void verifyTheSearch() {
+    }
+
+    @Given("Enable disable")
+    public void enableDisable() {
+
+        boolean radio = driver.findElement(By.id("ControlGroupSearchView_AvailabilitySearchInputSearchView_OneWay")).isSelected();
+        Assert.assertTrue(radio);
+
+        boolean field= driver.findElement(By.id("custom_date_picker_id_2")).isEnabled();
+        Assert.assertFalse(field);
+
+        driver.findElement(By.xpath("//*[text()='FROM']")).isDisplayed();
+
+        String s = driver.findElement(By.id("marketDate_2")).getAttribute("style");
+
+        if(s.contains("0.5")){
+            Assert.assertTrue(true);
+
+                    }
     }
 
 //    @Given("user goes to ebay site")

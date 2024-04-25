@@ -3,9 +3,15 @@ Feature: Amazon homepage validation
   @amzon @alpha
     #before
   Scenario: search funcationality
+    #beforstep
    # Given user navigates to Amazon Homepage
+    #afterstep
+    #beforestep
     When user enters the product name "ïPhone" in searchbox
+    #afterstep
+    #beforestep
     Then verify the search result
+    #afterstep
 #after
 
   @multiple

@@ -2,23 +2,26 @@ package stepdef;
 
 import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.junit.Assert;
+import org.openqa.selenium.*;
 import org.openqa.selenium.remote.tracing.opentelemetry.SeleniumSpanExporter;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import reusable.BaseCode;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import reusable.ReadExcel;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 public class SalesForceSteps extends BaseCode {
@@ -235,14 +238,23 @@ public class SalesForceSteps extends BaseCode {
     public void userSelectsTheBabyWishlist() {
 
         WebElement e = driver.findElement(By.id("nav-link-accountList-nav-line-1"));
-         Actions a = new Actions(driver);
-         a.clickAndHold(e).build().perform();
-        driver.findElement(By.linkText("Baby Wishlist")).sendKeys(Keys.chord(Keys.CONTROL,Keys.ENTER));
-         //driver.findElement(By.partialLinkText("Wish from An")).click();
+        Actions a = new Actions(driver);
+        a.clickAndHold(e).build().perform();
+        driver.findElement(By.linkText("Baby Wishlist")).sendKeys(Keys.chord(Keys.CONTROL, Keys.ENTER));
+        //driver.findElement(By.partialLinkText("Wish from An")).click();
+        String parentProperty = driver.getWindowHandle();
 
-
+        Set<String> handleValues = driver.getWindowHandles();
+        for (String winPop : handleValues) {
+            if (!winPop.equals(parentProperty)) {
+                driver.switchTo().window(winPop);
+                break;
+            }
+        }
+        driver.findElement(By.linkText("Create your wishlist")).click();
+        System.out.println(driver.getTitle());
+        driver.switchTo().window(parentProperty);
     }
-
     @Given("user drag and drops")
     public void userDragAndDrops() {
 
@@ -289,9 +301,53 @@ public class SalesForceSteps extends BaseCode {
 
         if(s.contains("0.5")){
             Assert.assertTrue(true);
-
                     }
+
+        driver.findElement(By.id("quote")).click();
+        //10 seconds
+        try {
+            driver.findElement(By.id("change_text")).getText();
+        }
+        catch(ElementClickInterceptedException e){
+            WebDriverWait wait= new WebDriverWait(driver, Duration.ofSeconds(60));
+            wait.pollingEvery(Duration.ofSeconds(10));
+            wait.ignoring(NoSuchElementException.class);
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.id("change_text")));
+            driver.findElement(By.id("change_text")).getText();
+
+        }
     }
+
+    @When("user extracts the list")
+    public void userExtractsTheList() {
+
+        List<String> val = new ArrayList<String>();
+        List<WebElement> colOne = driver.findElements(By.xpath("//div[@id='content']/descendant::li/child::a"));
+
+        driver.findElement(By.partialLinkText("Basic A")).click();
+    }
+//
+//    @Given("user handles the alert")
+//    public void userHandlesTheAlert() {
+//
+//        driver.findElement(By.xpath("//button[@class='btn btn-danger']")).click();
+//        String alertMessage = driver.switchTo().alert().getText();
+//        Assert.assertEquals("I am an alert box",alertMessage);
+//
+//        driver.switchTo().alert().accept();
+//        driver.switchTo().alert().dismiss();
+//
+//
+//
+//    }
+//
+//    @Given("user handles the confirmation")
+//    public void userHandlesTheConfirmation() {
+//
+//        driver.findElement(By.xpath("//button[@class='btn btn-primary']")).click();
+//        driver.switchTo().alert().accept();
+//
+//            }
 
 //    @Given("user goes to ebay site")
 //    public void userGoesToEbaySite() {

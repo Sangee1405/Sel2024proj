@@ -40,6 +40,7 @@ Feature: Amazon homepage validation
   @amzon02
   Scenario: handle the mouse actions
     Given user selects the baby wishlist
+    When user navigates to child window
 
     @drag01
     Scenario: drag and drop

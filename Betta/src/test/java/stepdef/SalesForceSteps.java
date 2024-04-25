@@ -242,6 +242,11 @@ public class SalesForceSteps extends BaseCode {
         a.clickAndHold(e).build().perform();
         driver.findElement(By.linkText("Baby Wishlist")).sendKeys(Keys.chord(Keys.CONTROL, Keys.ENTER));
         //driver.findElement(By.partialLinkText("Wish from An")).click();
+
+    }
+
+    @When("user navigates to child window")
+    public void userNavigatesToChildWindow() {
         String parentProperty = driver.getWindowHandle();
 
         Set<String> handleValues = driver.getWindowHandles();
@@ -253,7 +258,7 @@ public class SalesForceSteps extends BaseCode {
         }
         driver.findElement(By.linkText("Create your wishlist")).click();
         System.out.println(driver.getTitle());
-        driver.switchTo().window(parentProperty);
+        // driver.switchTo().window(parentProperty);
     }
     @Given("user drag and drops")
     public void userDragAndDrops() {
@@ -326,6 +331,8 @@ public class SalesForceSteps extends BaseCode {
 
         driver.findElement(By.partialLinkText("Basic A")).click();
     }
+
+
 //
 //    @Given("user handles the alert")
 //    public void userHandlesTheAlert() {

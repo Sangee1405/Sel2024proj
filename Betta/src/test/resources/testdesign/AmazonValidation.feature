@@ -46,3 +46,6 @@ Feature: Amazon homepage validation
     Scenario: drag and drop
       Given user drag and drops
 
+@fileupload
+      Scenario: file upload
+        Given user upload the profile photo

@@ -3,6 +3,7 @@ package stepdef;
 import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.junit.Assert;
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.tracing.opentelemetry.SeleniumSpanExporter;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -19,9 +20,7 @@ import reusable.ReadExcel;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public class SalesForceSteps extends BaseCode {
@@ -148,65 +147,76 @@ public class SalesForceSteps extends BaseCode {
 //            System.out.println(colOneValue);
         //   }
 
-        List<String>val=new ArrayList<String>();
-        List<WebElement>colOneElement=driver.findElements(By.xpath("//table[@class='infobox vcard']/descendant::tr/child::th"));
-
-        for(WebElement e:colOneElement)
-        {
-            val.add(e.getText());
-        }
-        System.out.println(val);
-        for(String v:val){
-            if(v.equals("Founder")){
-                //System.out.println("Founder is present");
-                Assert.assertTrue(true);
-                break;
-            }
-        }
-    }
-
-
-
-//        WebElement tab = driver.findElement(By.xpath("//table[@class='infobox vcard']"));
-
-//        int sizz = tab.findElements(By.tagName("th")).size();
+//        List<String>val=new ArrayList<String>();
+//        List<WebElement>colOneElement=driver.findElements(By.xpath("//table[@class='infobox vcard']/descendant::tr/child::th"));
 //
-//        List<String > colOneValue = new ArrayList<String>();
-//
-//        for (int k = 0; k < sizz; k++) {
-//
-//            colOneValue.add(tab.findElements(By.tagName("th")).get(k).getText());
-//
-//           // System.out.println(tab.findElements(By.tagName("th")).get(k).getText());
+//        for(WebElement e:colOneElement)
+//        {
+//            val.add(e.getText());
 //        }
-//
-//        System.out.println(colOneValue);
-
-
-
-//        List<WebElement> ta =tab.findElements(By.tagName("th"));
-//        List<String> se = new ArrayList<String>();
-//
-//        for(WebElement t:ta){
-//
-//            se.add(t.getText());
+//        System.out.println(val);
+//        for(String v:val){
+//            if(v.equals("Founder")){
+//                //System.out.println("Founder is present");
+//                Assert.assertTrue(true);
+//                break;
+//            }
 //        }
-
-//        int siz = tab.findElements(By.tagName("td")).size();
-//
-//        List<String> colTwoVal= new ArrayList<String>();
-//
-//        for (int k = 2; k < siz; k++) {
-//
-//            colTwoVal.add(tab.findElements(By.tagName("td")).get(k).getText());
-//
-//           // System.out.println(tab.findElements(By.tagName("td")).get(k).getText());
-//        }
-//
-//        System.out.println(colTwoVal);
-//
 //    }
 
+
+
+        WebElement tab = driver.findElement(By.xpath("//table[@class='infobox vcard']"));
+
+        int sizz = tab.findElements(By.tagName("th")).size();
+
+        List<String > colOneValue = new ArrayList<String>();
+
+        for (int k = 0; k < sizz; k++) {
+
+            colOneValue.add(tab.findElements(By.tagName("th")).get(k).getText());
+
+           // System.out.println(tab.findElements(By.tagName("th")).get(k).getText());
+        }
+
+        System.out.println(colOneValue);
+
+
+
+        List<WebElement> ta =tab.findElements(By.tagName("th"));
+        List<String> se = new ArrayList<String>();
+
+        for(WebElement t:ta){
+
+            se.add(t.getText());
+        }
+
+        int siz = tab.findElements(By.tagName("td")).size();
+
+        List<String> colTwoVal= new ArrayList<String>();
+
+        for (int k = 2; k < siz; k++) {
+
+            colTwoVal.add(tab.findElements(By.tagName("td")).get(k).getText());
+
+           // System.out.println(tab.findElements(By.tagName("td")).get(k).getText());
+        }
+
+        System.out.println(colTwoVal);
+
+        Map<List,List> m = new HashMap<List,List>();
+        m.put(colOneValue,colTwoVal);
+
+        for(Map.Entry h:m.entrySet()){
+
+            switch (h.getKey().toString()) {
+                case "ISIN" -> Assert.assertEquals("INE467B01029", h.getValue());
+                case "Founder" -> Assert.assertEquals("J. R. D. Tata", h.getValue());
+            }
+        }
+
+    }
+ 
     @Given("user navigates to Spicejet Book Homepage")
     public void userNavigatesToSpicejetHomepage() {
         driver = new ChromeDriver();
@@ -330,6 +340,23 @@ public class SalesForceSteps extends BaseCode {
         List<WebElement> colOne = driver.findElements(By.xpath("//div[@id='content']/descendant::li/child::a"));
 
         driver.findElement(By.partialLinkText("Basic A")).click();
+    }
+
+    @Given("user upload the profile photo")
+    public void userUploadTheProfilePhoto() throws InterruptedException {
+
+        Thread.sleep(Duration.ofSeconds(20));
+
+        driver.findElement(By.xpath("//div[@class='position-absolute color-bg-default rounded-2 color-fg-default px-2 py-1 left-0 bottom-0 ml-2 mb-2 border']")).click();
+        WebElement addFile = driver.findElement(By.xpath("//label[@class='dropdown-item text-normal']"));
+        addFile.click();
+        addFile.sendKeys("C:\\Users\\ravch\\Screenshot_20221129_072331.png");
+        driver.findElement(By.xpath("//span[text()='Set new profile picture']")).click();
+    }
+
+    @Then("verify the login status")
+    public void verifyTheLoginStatus() {
+
     }
 
 
